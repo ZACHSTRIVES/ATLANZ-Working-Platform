@@ -1,9 +1,14 @@
 from flask import *
+from blueprints import auth,staffs,dashboard,customer
 
+import config
 
 app = Flask(__name__)
+app.config.from_object(config)
+app.register_blueprint(auth.auth_bp)
+app.register_blueprint(dashboard.dashboard_bp)
+app.register_blueprint(staffs.staffs_bp)
 
-@app.route('/')
-def hello():
 
-    return render_template("page-login.html")
+if __name__ == '__main__':
+    app.run()
