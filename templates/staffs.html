@@ -4,7 +4,7 @@
 <div class="row page-titles mx-0">
     <div class="col-sm-6 p-md-0">
         <div class="welcome-text">
-            <h4>Staffs</h4>
+            <h4>Staff</h4>
             <span>Manage your employee account here</span>
         </div>
     </div>
@@ -19,7 +19,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <a href="email-compose.html" class="btn btn-primary btn-block" data-toggle="modal" data-target="#basicModal">Add Staff</a>
+                <a href="email-compose.html"  style="width: 30%" class="btn btn-primary btn-block" data-toggle="modal" data-target="#basicModal">Add Staff</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -33,11 +33,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for i in range(5)%}
+                        {% for s in staffs%}
                         <tr>
-                            <td><strong>Zach</strong></td>
+                            <td><strong>{{s[0]}}</strong></td>
                             <td>*********</td>
-                            <td>Super Admin</td>
+                            <td>
+                            {% if s[2]==1 %}
+                            Staff
+                            {%elif s[2]==0 %}
+                            Super Admin
+                            {%else%}
+                            Admin
+                            {%endif%}
+                            </td>
+
+                            {%if s[2]!=0%}
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
@@ -49,6 +59,7 @@
                                     </div>
                                 </div>
                             </td>
+                            {%endif%}
                         </tr>
                         {%endfor%}
 
@@ -70,40 +81,42 @@
             </div>
             <div class="modal-body">
                 <div class="basic-form">
-                    <form>
+                    <form method="post" action="{{url_for('staffs.edit_staff')}}">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Name">
+                                <input type="text" class="form-control" name="name" required placeholder="Name">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Password</label>
+                            <label class="col-sm-3 col-form-label" >Password</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input type="password" name="password" class="form-control" required placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Role</label>
                             <div class="col-sm-9">
-                                <div class="dropdown bootstrap-select mr-sm-2 default-select dropup"><select class="mr-sm-2 default-select" id="inlineFormCustomSelect" tabindex="-98">
-                                    <option selected="">Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" data-id="inlineFormCustomSelect" title="Choose..." aria-expanded="false"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">Choose...</div></div> </div></button><div class="dropdown-menu" role="combobox" style="max-height: 198px; overflow: hidden; min-height: 103px; position: absolute; transform: translate3d(0px, -134px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="top-start"><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 182px; overflow-y: auto; min-height: 87px;"><ul class="dropdown-menu inner show"><li class="selected active"><a role="option" class="dropdown-item selected active" aria-disabled="false" tabindex="0" aria-selected="true"><span class=" bs-ok-default check-mark"></span><span class="text">Choose...</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">One</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">Two</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class=" bs-ok-default check-mark"></span><span class="text">Three</span></a></li></ul></div></div></div>
+                                <div class="dropdown bootstrap-select mr-sm-2 default-select dropup">
+                                    <select name="type" class="mr-sm-2 default-select" id="inlineFormCustomSelect" tabindex="-98">
+                                    <option value="1">Staff (Read Only)</option>
+                                    <option value="2">Admin (Inventory Management)</option>
+                                </select>
 
                             </div>
+                            </div>
                         </div>
+                        <div class="modal-footer margin-top">
+                            <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                            <button  class="btn btn-primary" type="submit">Add</button>
+                        </div>
+
                     </form>
                 </div>
 
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add</button>
-            </div>
+
         </div>
     </div>
 </div>
