@@ -1,0 +1,54 @@
+{%extends 'index.html' %}
+
+{%block content%}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Products Details</h4>
+                <a  type="button" class="btn btn-outline-primary" href="{{ url_for('inventory.add_products') }}">Add Product</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th><strong>BARCODE</strong></th>
+                                <th><strong>PRODUCT NAME</strong></th>
+                                <th><strong>QTY.</strong></th>
+                                <th><strong>COST PRICE</strong></th>
+                                <th><strong>SELLING PRICE</strong></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in products %}
+                            <tr>
+                                <td><strong>{{ i[0] }}</strong></td>
+                                <td>{{ i[1] }}</td>
+                                <td>{{ i[2] }}</td>
+                                <td>$ {{ i[3] }}</td>
+                                <td>$ {{ i[4] }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="5" cy="12" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="19" cy="12" r="2"/></g></svg>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ url_for('inventory.edit_products', barcode=i[0]) }}">Edit</a>
+                                            <a class="dropdown-item" href="{{ url_for('inventory.del_product', barcode=i[0]) }}">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{%endblock%}
