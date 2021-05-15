@@ -1,0 +1,25 @@
+{%extends 'index.html' %}
+
+{%block content%}
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Transactions</h4>
+                <span>Your trading records are all here</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <a  href="{{ url_for("transactions.uploadTransactions") }}" style="width: 20%" class="btn btn-primary btn-block" >Upload</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
