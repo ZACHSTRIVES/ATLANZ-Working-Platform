@@ -4,7 +4,7 @@ from config import db
 def list_all_products():
     try:
         cur = db.cursor()
-        sql = "select * from products"
+        sql = "select * from products order by barcode"
         db.ping(reconnect=True)
         cur.execute(sql)
         result = cur.fetchall()
@@ -18,7 +18,7 @@ def get_products(barcode):
     try:
         cur = db.cursor()
         db.ping(reconnect=True)
-        sql = "SELECT * FROM products WHERE barcode='%s'" % barcode
+        sql = "SELECT * FROM products WHERE barcode='%s' " % barcode
         cur.execute(sql)
         result = cur.fetchone()
         return result
