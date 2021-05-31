@@ -8,7 +8,7 @@ def query_products(sql, barcodes, rows):
         cur.execute(sql)
         res = cur.fetchall()
 
-        result=[]
+        result = []
         for i in res:
             result.append(i[0])
 
@@ -18,17 +18,21 @@ def query_products(sql, barcodes, rows):
 
         temp = []
         row_tuple = []
+        qty = []
 
         for r in rows:
-            rowT = (r[2], r[3], r[4], r[5], r[6], r[7], r[8],  r[10], r[11], r[12], r[13], r[17], r[17], r[11])
+            qtyT = (r[10], r[11])
+            rowT = (r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[10], r[11], r[12], r[13], r[17], r[17], r[11])
             row_tuple.append(rowT)
+            qty.append(qtyT)
             if r[11] not in result and r[11] not in temp:
                 temp.append(r[11])
-                querySet = (r[11], r[12],r[17])
+                querySet = (r[11], r[12], r[17])
                 need_to_add.append(querySet)
 
         insert_new_products(need_to_add)
         insert_transactions(row_tuple)
+        update_inventory(qty)
 
 
     except Exception as e:
@@ -59,6 +63,19 @@ def insert_transactions(rows):
               "from products " \
               "where barcode=%s" \
               "))"
+        cur.executemany(sql, rows)
+        db.commit()
+        cur.close()
+
+    except Exception as e:
+        raise e
+
+
+def update_inventory(rows):
+    try:
+        cur = db.cursor()
+        db.ping(reconnect=True)
+        sql = "UPDATE products SET Qty=Qty-%s WHERE barcode=%s"
         cur.executemany(sql, rows)
         db.commit()
         cur.close()
