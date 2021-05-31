@@ -110,12 +110,14 @@
                 </a>
 
                 </li>
-                {% if pageName=="inventory" %}
-                    <li class="mm-active">
-                        {% else %}
-                    <li>
-                {% endif %}
-                <a class="ai-icon" href="javascript:void()" aria-expanded="false">
+
+                {%if pageName=="inventory"%}
+                <li class="mm-active">
+                    {%else%}
+                <li>
+                    {%endif%}
+                    <a class="ai-icon" href="{{url_for('inventory.inventory')}}" aria-expanded="false">
+
                     <i class="flaticon-077-menu-1"></i>
                     <span class="nav-text">Inventory</span>
                 </a>
