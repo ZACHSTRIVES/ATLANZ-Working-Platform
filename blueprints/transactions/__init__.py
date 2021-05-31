@@ -1,6 +1,6 @@
 from flask import *
 from config import *
-from .queryProducts import  *
+from .queryProducts import *
 import xlrd
 
 transactions_bp = Blueprint('transactions', __name__)
@@ -50,9 +50,6 @@ def uploadExcel():
         barcodes.append(row[11])
 
     query_sql = "SELECT barcode FROM products WHERE barcode IN ( '" + "', '".join(barcodes) + "')"  # 生成sql语句
-    query_products(query_sql,barcodes,rows)
-
-
-
+    query_products(query_sql, barcodes, rows)
 
     return query_sql

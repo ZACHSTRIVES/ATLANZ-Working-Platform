@@ -6,9 +6,12 @@ inventory_bp = Blueprint('inventory', __name__)
 @inventory_bp.route('/inventory',methods=['GET','POST'])
 def inventory():
     # login_ = login_status()
+    user = session.get("user")
+    if user is None:
+        return redirect(url_for("auth.login"))
     if request.method == 'GET':
         products = list_all_products()
-        return render_template('inventory.html', products=products)
+        return render_template('inventory.html', products=products,user=user)
 
 @inventory_bp.route('/edit_products<barcode>',methods=['GET','POST','PUT'])
 def edit_products(barcode):
