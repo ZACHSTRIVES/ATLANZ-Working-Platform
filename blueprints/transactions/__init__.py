@@ -1,6 +1,7 @@
 from flask import *
 from config import *
 from .queryProducts import *
+from .transactions import *
 import xlrd
 
 transactions_bp = Blueprint('transactions', __name__)
@@ -12,7 +13,8 @@ def transactions():
     if user is None:
         return redirect(url_for("auth.login"))
     if request.method == 'GET':
-        return render_template("transactions.html", user=user, pageName="transactions")
+        transactions = list_all_transactions()
+        return render_template("transactions.html", user=user, transactions=transactions, pageName="transactions")
 
 
 @transactions_bp.route('/transactions/upload', methods=['GET'])
@@ -51,5 +53,38 @@ def uploadExcel():
 
     query_sql = "SELECT barcode FROM products WHERE barcode IN ( '" + "', '".join(barcodes) + "')"  # 生成sql语句
     query_products(query_sql, barcodes, rows)
+
+    return redirect(url_for("transactions.transactions"))
+
+@transactions_bp.route('/edit_transactions<transactions_id>', methods=['GET', 'POST', 'PUT'])
+def edit_transactions(transactions_id):
+    user = session.get("user")
+    if user is None:
+        return redirect(url_for("auth.login"))
+    if request.method == 'GET':
+        transactions = get_transactions(transactions_id)
+        return render_template('edittransactions.html', transactions=transactions, user=user)
+    elif request.method == 'POST':
+        customer_name = request.form.get('customer_name')
+        email = request.form.get('email')
+        qty = request.form.get('qty')
+        products_name = request.form.get('products_name')
+        bag_size = request.form.get('bag_size')
+        selling_price = request.form.get('selling_price')
+        profits = request.form.get('profits')
+        sql = "UPDATE transactions " \
+              "SET customer_name='%s',email='%s', qty=%s, products_name='%s', bag_size=%s, selling_price=%s, profits=%s" \
+              " WHERE transactions_id='%s'" % (customer_name,email, qty, products_name, bag_size, selling_price, profits, transactions_id)
+        change_transactions_db(sql)
+
+        return redirect(url_for("transactions.transactions"))
+
+@transactions_bp.route('/del_transactions<transactions_id>', methods=['GET', 'DELETE'])
+def del_transactions(transactions_id):
+    user = session.get("user")
+    if user is None:
+        return redirect(url_for("auth.login"))
+    sql = "delete from transactions where transactions_id='%s'" % transactions_id
+    change_transactions_db(sql)
 
     return redirect(url_for("transactions.transactions"))

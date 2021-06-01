@@ -1,0 +1,45 @@
+{%extends 'index.html' %}
+
+{%block content%}
+
+<div class="col-xl-12 col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Edit Staffs</h4>
+        </div>
+        <div class="card-body">
+            <div class="basic-form">
+                <form method="post" action="{{url_for('staffs.edit_staffs', name=staffs[0])}}">
+                     <fieldset disabled>
+                        <div class="form-group">
+                            <label>Transactions ID</label>
+                            <input type="text" class="form-control" value="{{ staffs[0] }}" required>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="text" class="form-control"  name="customer_name" value="{{ staffs[1] }}" required>
+                    </div>
+                    <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Role</label>
+                            <div class="col-sm-9">
+                                <div class="dropdown bootstrap-select mr-sm-2 default-select dropup">
+                                    <select name="type" class="mr-sm-2 default-select" id="inlineFormCustomSelect" tabindex="-98">
+                                    <option value="1">Staff (Read Only)</option>
+                                    <option value="2">Admin (Inventory Management)</option>
+                                </select>
+
+                            </div>
+                            </div>
+                        </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}

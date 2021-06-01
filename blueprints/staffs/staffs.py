@@ -1,10 +1,10 @@
 from config import db
 
 
-def list_all_products():
+def list_all_staffs():
     try:
         cur = db.cursor()
-        sql = "select * from products order by barcode"
+        sql = "select * from users order by name"
         db.ping(reconnect=True)
         cur.execute(sql)
         result = cur.fetchall()
@@ -15,12 +15,11 @@ def list_all_products():
     except Exception as e:
         print(e)
 
-
-def get_products(barcode):
+def get_staffs(name):
     try:
         cur = db.cursor()
         db.ping(reconnect=True)
-        sql = "SELECT * FROM products WHERE barcode='%s' " % barcode
+        sql = "SELECT * FROM users WHERE name='%s' " % name
         cur.execute(sql)
         result = cur.fetchone()
         db.commit()
@@ -30,7 +29,7 @@ def get_products(barcode):
         print(e)
 
 
-def change_product_db(sql):
+def change_transactions_db(sql):
     try:
         cur = db.cursor()
         db.ping(reconnect=True)
