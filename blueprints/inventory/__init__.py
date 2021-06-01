@@ -1,5 +1,7 @@
+import xlrd
 from flask import *
-from blueprints.inventory.products import *
+from .products import *
+from .queryInventory import *
 
 inventory_bp = Blueprint('inventory', __name__)
 
@@ -22,7 +24,7 @@ def edit_products(barcode):
         return redirect(url_for("auth.login"))
     if request.method == 'GET':
         products = get_products(barcode)
-        return render_template('editInventory.html', products=products, user=user)
+        return render_template('editInventory.htmil', products=products, user=user)
     elif request.method == 'POST':
         product_name = request.form.get('product_name')
         Qty = request.form.get('Qty')
@@ -51,7 +53,6 @@ def add_products():
               " VALUES ('%s', '%s', %s, %s);" % (barcode, product_name, Qty, cost_price)
         change_product_db(sql)
 
-
         return redirect(url_for("inventory.inventory"))
 
 
@@ -62,4 +63,42 @@ def del_product(barcode):
         return redirect(url_for("auth.login"))
     sql = "delete from products where barcode='%s'" % barcode
     change_product_db(sql)
+    return redirect(url_for("inventory.inventory"))
+
+
+@inventory_bp.route('/inventory/upload', methods=['GET'])
+def uploadInventory():
+    user = session.get("user")
+    if user is None:
+        return redirect(url_for("auth.login"))
+
+    return render_template("uploadInventory.html", user=user, pageName="inventory")
+
+
+@inventory_bp.route('/inventory/upload/execl', methods=['POST'])
+def uploadExcel():
+    user = session.get("user")
+    if user is None:
+        return redirect(url_for("auth.login"))
+    file = request.files['file']
+    f = file.read()  # 文件内容
+    data = xlrd.open_workbook(file_contents=f)
+    table = data.sheets()[0]
+    names = data.sheet_names()  # 返回book中所有工作表的名字
+    nrows = table.nrows  # 获取该sheet中的有效行数
+    ncols = table.ncols  # 获取该sheet中的有效列数
+    if ncols != 90:
+        flash("Please check the format of the uploaded file！")
+
+    rows = []
+
+    for i in range(1, nrows):
+        row = table.row_values(i)
+        rowT = (row[0], row[1], row[2], row[3])
+
+        rows.append(rowT)
+    print(rows)
+
+    queryInventory(rows)
+
     return redirect(url_for("inventory.inventory"))
