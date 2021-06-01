@@ -27,10 +27,9 @@ def edit_products(barcode):
         product_name = request.form.get('product_name')
         Qty = request.form.get('Qty')
         cost_price = request.form.get('cost_price')
-        selling_price = request.form.get('selling_price')
         sql = "UPDATE products " \
-              "SET product_name='%s',Qty=%s,cost_price=%s,selling_price=%s" \
-              " WHERE barcode='%s'" % (product_name, Qty, cost_price, selling_price, barcode)
+              "SET product_name='%s',Qty=%s,cost_price=%s" \
+              " WHERE barcode='%s'" % (product_name, Qty, cost_price, barcode)
         change_product_db(sql)
 
         return redirect(url_for("inventory.inventory"))
@@ -48,9 +47,8 @@ def add_products():
         product_name = request.form.get('product_name')
         Qty = request.form.get('Qty')
         cost_price = request.form.get('cost_price')
-        selling_price = request.form.get('selling_price')
-        sql = "INSERT INTO products (barcode, product_name, Qty, cost_price, selling_price) " \
-              " VALUES ('%s', '%s', %s, %s, %s);" % (barcode, product_name, Qty, cost_price, selling_price)
+        sql = "INSERT INTO products (barcode, product_name, Qty, cost_price) " \
+              " VALUES ('%s', '%s', %s, %s);" % (barcode, product_name, Qty, cost_price)
         change_product_db(sql)
 
 
