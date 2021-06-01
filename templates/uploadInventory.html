@@ -1,0 +1,50 @@
+{%extends 'index.html' %}
+
+{%block content%}
+    <div  id="uploadingNotice" class="col-xl-6" style="margin-top: 20px;display: none">
+        <div class="alert alert-danger left-icon-big alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+            </button>
+            <div class="media">
+                <div class="alert-left-icon-big">
+                    <span><i class="mdi mdi-alert"></i></span>
+                </div>
+                <div class="media-body">
+                    <h5 class="mt-1 mb-2">Uploading!</h5>
+                    <p class="mb-0">Do not close this page！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Update Inventory By Excel</h4>
+        </div>
+        <div class="card-body">
+            <div class="basic-form custom_file_input">
+                <form action="{{ url_for("transactions.uploadExcel") }}" method="post" onsubmit="showDiv()" enctype="multipart/form-data">
+
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" name="file" class="custom-file-input">
+                            <label class="custom-file-label selected">Choose File</label>
+
+                        </div>
+
+                    </div>
+                    <button type="submit" id="upload" onclick="showDiv()" style="margin-top:30px" class="btn btn-rounded btn-success" ><span class="btn-icon-left text-success"><i class="fa fa-upload color-success"></i>
+                                    </span>Upload</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function showDiv(){
+            document.getElementById("uploadingNotice").style.display="block";
+        }
+    </script>
+
+
+{% endblock %}
