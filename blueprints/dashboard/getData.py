@@ -52,3 +52,5 @@ def get_total_customers():
     """TODO:
     """
     return
+
+
