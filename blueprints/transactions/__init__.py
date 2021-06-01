@@ -51,6 +51,7 @@ def uploadExcel():
         rows.append(row)
         barcodes.append(row[11])
 
+
     query_sql = "SELECT barcode FROM products WHERE barcode IN ( '" + "', '".join(barcodes) + "')"  # 生成sql语句
     query_products(query_sql, barcodes, rows)
 

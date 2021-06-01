@@ -8,7 +8,7 @@ def list_all_products():
         db.ping(reconnect=True)
         cur.execute(sql)
         result = cur.fetchall()
-        db.commit()
+
         cur.close()
         return result
 
@@ -23,7 +23,7 @@ def get_products(barcode):
         sql = "SELECT * FROM products WHERE barcode='%s' " % barcode
         cur.execute(sql)
         result = cur.fetchone()
-        db.commit()
+
         cur.close()
         return result
     except Exception as e:
